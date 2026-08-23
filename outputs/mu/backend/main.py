@@ -29,6 +29,7 @@ from auth import (
     get_current_user, require_login, require_admin
 )
 from sensitive_filter import check_sensitive
+import re
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("flea-market")
@@ -159,7 +160,10 @@ def reset_password(body: PasswordReset, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.username == body.username).first()
     if not user:
         raise HTTPException(status_code=404, detail="用户不存在")
-    if not user.phone or user.phone.strip() != body.phone:
+    # 归一化手机号：去除所有非数字字符后比较
+    stored_phone = re.sub(r'\D', '', user.phone or '')
+    input_phone = re.sub(r'\D', '', body.phone)
+    if not stored_phone or stored_phone != input_phone:
         raise HTTPException(status_code=400, detail="手机号不匹配，请核实后重试")
     try:
         user.password_hash = hash_password(body.new_password)
@@ -693,6 +697,9 @@ if os.path.isdir(DIST_DIR):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
+
+
 
 
 

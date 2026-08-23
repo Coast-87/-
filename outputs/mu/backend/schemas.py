@@ -34,8 +34,9 @@ class UserRegister(BaseModel):
     @field_validator("phone")
     @classmethod
     def validate_phone(cls, v: str) -> str:
-        if not re.match(r'^1[3-9]\d{9}$', v):
-            raise ValueError("请输入正确的11位中国大陆手机号")
+        v = re.sub(r'\D', '', v)
+        if len(v) != 11 or v[0] != '1':
+            raise ValueError('请输入正确的11位手机号')
         return v
 
 class UserLogin(BaseModel):
@@ -63,8 +64,9 @@ class PasswordReset(BaseModel):
     @field_validator("phone")
     @classmethod
     def validate_phone(cls, v: str) -> str:
-        if not re.match(r'^1[3-9]\d{9}$', v):
-            raise ValueError("请输入正确的11位中国大陆手机号")
+        v = re.sub(r'\D', '', v)
+        if len(v) != 11 or v[0] != '1':
+            raise ValueError('请输入正确的11位手机号')
         return v
 
 class PasswordChange(BaseModel):
@@ -203,3 +205,4 @@ class AdminUserCreate(BaseModel):
 
 class RoleUpdate(BaseModel):
     role: str = Field(..., pattern="^(admin|user)$")
+

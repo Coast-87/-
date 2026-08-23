@@ -164,7 +164,7 @@ function validatePassword(v) {
 
 function validatePhone(v) {
   if (!v.trim()) return "请输入手机号";
-  if (!/^1[3-9]\d{9}$/.test(v.trim())) return "请输入正确的11位中国大陆手机号";
+  const clean = v.replace(/\D/g, ''); if (clean.length !== 11 || clean[0] !== '1') return '请输入正确的11位手机号';
   return "";
 }
 
@@ -245,3 +245,4 @@ async function submit() {
   }
 }
 </script>
+
