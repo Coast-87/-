@@ -30,7 +30,7 @@ mv ni flea-market   # 如果解压出来是 ni 目录
 # 运行一键部署脚本
 cd /opt/flea-market
 chmod +x deploy/deploy.sh
-bash deploy/deploy.sh 你的域名或IP
+bash deploy/deploy.sh market.youoy77.top或IP
 ```
 
 ### 3. 配置环境变量
@@ -88,7 +88,7 @@ vim .env  # 修改配置
 ```bash
 cp /opt/flea-market/deploy/nginx.conf /etc/nginx/sites-available/flea-market
 # 编辑配置文件，将 your-domain.com 替换为实际域名或 IP
-sed -i 's/your-domain.com/你的域名或IP/g' /etc/nginx/sites-available/flea-market
+sed -i 's/your-domain.com/market.youoy77.top或IP/g' /etc/nginx/sites-available/flea-market
 ln -s /etc/nginx/sites-available/flea-market /etc/nginx/sites-enabled/
 rm -f /etc/nginx/sites-enabled/default
 nginx -t
@@ -108,7 +108,7 @@ systemctl start flea-market
 
 ```bash
 apt install -y certbot python3-certbot-nginx
-certbot --nginx -d 你的域名
+certbot --nginx -d market.youoy77.top
 ```
 
 ## 日常运维
