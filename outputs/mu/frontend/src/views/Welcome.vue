@@ -94,7 +94,7 @@
               <label class="field-label">手机号</label>
               <div class="input-wrap">
                 <svg class="input-icon" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2" stroke="currentColor" stroke-width="1.5" /><circle cx="10" cy="14" r="1" fill="currentColor" opacity="0.4" /></svg>
-                <input v-model="phone" type="tel" placeholder="输入手机号" class="input" autocomplete="tel" @input="phoneError = ''" />
+                <input v-model="phone" type="tel" placeholder="输入手机号" class="input" autocomplete="tel" maxlength="11" @input="onPhoneInput" />
               </div>
               <p v-if="phoneError" class="field-error">{{ phoneError }}</p>
             </div>
@@ -121,7 +121,7 @@
               <label class="field-label">手机号</label>
               <div class="input-wrap">
                 <svg class="input-icon" viewBox="0 0 20 20" fill="none"><rect x="5" y="2" width="10" height="16" rx="2" stroke="currentColor" stroke-width="1.5" /><circle cx="10" cy="14" r="1" fill="currentColor" opacity="0.4" /></svg>
-                <input v-model="phone" type="tel" placeholder="输入注册手机号" class="input" autocomplete="tel" @input="phoneError = ''" />
+                <input v-model="phone" type="tel" placeholder="输入注册手机号" class="input" autocomplete="tel" maxlength="11" @input="onPhoneInput" />
               </div>
               <p v-if="phoneError" class="field-error">{{ phoneError }}</p>
             </div>
@@ -206,10 +206,24 @@ function validateUsername() {
   return true;
 }
 
+
+function onPhoneInput(e) {
+  const raw = e.target.value;
+  const cleaned = raw.replace(/\D/g, '');
+  if (raw !== cleaned) {
+    phone.value = cleaned;
+  }
+  phoneError.value = '';
+}
+
+function cleanPhone(v) {
+  return (v || '').replace(/\D/g, '');
+}
+
 function validatePhone() {
   const v = phone.value.trim();
   if (!v) { phoneError.value = "请输入手机号"; return false; }
-  if (!/^1[3-9]d{9}$/.test(v)) { phoneError.value = "手机号格式不正确"; return false; }
+  if (!/^\d{11}$/.test(v) || v[0] !== "1") { phoneError.value = "请输入正确的11位手机号"; return false; }
   phoneError.value = "";
   return true;
 }
@@ -264,7 +278,7 @@ async function submit() {
     try {
       const res = await api.post("/auth/register", {
         username: username.value.trim(),
-        phone: phone.value.trim(),
+        phone: cleanPhone(phone.value),
         password: password.value,
       });
       formMsg.value = res.data?.message || "注册成功，请登录";
@@ -286,7 +300,7 @@ async function submit() {
     loading.value = true;
     try {
       const res = await api.post("/auth/reset-password", {
-        phone: phone.value.trim(),
+        phone: cleanPhone(phone.value),
         new_password: password.value,
       });
       formMsg.value = res.data?.message || "密码重置成功，请登录";
