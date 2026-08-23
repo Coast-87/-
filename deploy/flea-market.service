@@ -1,0 +1,23 @@
+[Unit]
+Description=校园跳蚤市场 - AI 智能发品平台
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/opt/flea-market/outputs/mu/backend
+EnvironmentFile=/opt/flea-market/outputs/mu/backend/.env
+ExecStart=/opt/flea-market/outputs/mu/backend/.venv/bin/python -m uvicorn main:app --host 127.0.0.1 --port 8000
+Restart=always
+RestartSec=3
+
+# 安全加固
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ReadWritePaths=/opt/flea-market/outputs/mu/backend/uploads /opt/flea-market/outputs/mu/backend
+
+[Install]
+WantedBy=multi-user.target
