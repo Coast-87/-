@@ -1,0 +1,10 @@
+# 版本下限为 Python 3.14 下验证可用的组合
+fastapi>=0.141.1
+uvicorn[standard]>=0.52.4
+python-multipart>=0.0.32
+sqlalchemy>=2.0.52
+aiofiles>=25.1.0
+httpx>=0.28.1
+pydantic>=2.13.4
+python-dotenv>=1.2.3
+python-jose[cryptography]>=3.5.0
