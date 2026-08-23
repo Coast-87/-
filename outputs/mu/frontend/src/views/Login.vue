@@ -36,7 +36,7 @@
             class="input-field"
             :class="{ 'border-red-400 ring-2 ring-red-200': phoneError }"
             placeholder="请输入11位手机号"
-            maxlength="11"
+            maxlength="20"
             @input="phoneError = ''"
             @keyup.enter="submit"
           />
@@ -245,4 +245,5 @@ async function submit() {
   }
 }
 </script>
+
 
