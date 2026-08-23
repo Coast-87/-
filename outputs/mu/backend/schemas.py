@@ -9,7 +9,7 @@ from datetime import datetime
 class UserRegister(BaseModel):
     username: str = Field(..., min_length=2, max_length=20)
     password: str = Field(..., min_length=8, max_length=100)
-    phone: str = Field(..., min_length=11, max_length=11)
+    phone: str = Field(...)
 
     @field_validator("username")
     @classmethod
@@ -46,7 +46,7 @@ class UserLogin(BaseModel):
 class PasswordReset(BaseModel):
     """找回密码：用户名 + 手机号验证 → 设置新密码"""
     username: str = Field(..., min_length=2, max_length=20)
-    phone: str = Field(..., min_length=11, max_length=11)
+    phone: str = Field(...)
     new_password: str = Field(..., min_length=8, max_length=100)
 
     @field_validator("new_password")

@@ -181,7 +181,7 @@ async function submit() {
 
     loading.value = true;
     try {
-      const res = await resetPassword(username.value.trim(), phone.value.trim(), newPassword.value);
+      const res = await resetPassword(username.value.trim(), phone.value.replace(/\D/g, ""), newPassword.value);
       success.value = res.message || "密码重置成功";
       // 3 秒后跳回登录
       setTimeout(() => {
@@ -221,7 +221,7 @@ async function submit() {
   try {
     const fn = isRegister.value ? register : login;
     const args = isRegister.value
-      ? [username.value.trim(), password.value, phone.value.trim()]
+      ? [username.value.trim(), password.value, phone.value.replace(/\D/g, "")]
       : [username.value.trim(), password.value];
     const res = await fn(...args);
     userStore.setAuth(res.access_token, res.user);
